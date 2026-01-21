@@ -1,0 +1,182 @@
+[
+    {
+        "name": "Two-handed sword",
+        "min_damage": 10,
+        "max_damage": 20,
+        "type": "melee"
+    },
+    {
+        "name": "Longbow",
+        "min_damage": 8,
+        "max_damage": 15,
+        "type": "ranged"
+    },
+    {
+        "name": "Dagger",
+        "min_damage": 3,
+        "max_damage": 7,
+        "type": "melee"
+    },
+    {
+        "name": "Crossbow",
+        "min_damage": 12,
+        "max_damage": 18,
+        "type": "ranged"
+    },
+    {
+        "name": "Battle axe",
+        "min_damage": 15,
+        "max_damage": 25,
+        "type": "melee"
+    },
+    {
+        "name": "Throwing knife",
+        "min_damage": 5,
+        "max_damage": 10,
+        "type": "ranged"
+    },
+    {
+        "name": "Warhammer",
+        "min_damage": 18,
+        "max_damage": 30,
+        "type": "melee"
+    },
+    {
+        "name": "Shortbow",
+        "min_damage": 6,
+        "max_damage": 12,
+        "type": "ranged"
+    },
+    {
+        "name": "Spear",
+        "min_damage": 10,
+        "max_damage": 18,
+        "type": "melee"
+    },
+    {
+        "name": "Slingshot",
+        "min_damage": 2,
+        "max_damage": 6,
+        "type": "ranged"
+    },
+    {
+        "name": "Mace",
+        "min_damage": 12,
+        "max_damage": 22,
+        "type": "melee"
+    },
+    {
+        "name": "Composite bow",
+        "min_damage": 9,
+        "max_damage": 16,
+        "type": "ranged"
+    },
+    {
+        "name": "Halberd",
+        "min_damage": 14,
+        "max_damage": 24,
+        "type": "melee"
+    },
+    {
+        "name": "Javelin",
+        "min_damage": 7,
+        "max_damage": 14,
+        "type": "ranged"
+    },
+    {
+        "name": "Flail",
+        "min_damage": 13,
+        "max_damage": 23,
+        "type": "melee"
+    },
+    {
+        "name": "Blowgun",
+        "min_damage": 4,
+        "max_damage": 8,
+        "type": "ranged"
+    },
+    {
+        "name": "Katana",
+        "min_damage": 16,
+        "max_damage": 28,
+        "type": "melee"
+    },
+    {
+        "name": "Throwing axe",
+        "min_damage": 6,
+        "max_damage": 12,
+        "type": "ranged"
+    },
+    {
+        "name": "Rapier",
+        "min_damage": 8,
+        "max_damage": 14,
+        "type": "melee"
+    },
+    {
+        "name": "Boomerang",
+        "min_damage": 3,
+        "max_damage": 9,
+        "type": "ranged"
+    },
+    {
+        "name": "Claymore",
+        "min_damage": 20,
+        "max_damage": 35,
+        "type": "melee"
+    },
+    {
+        "name": "Recurve bow",
+        "min_damage": 10,
+        "max_damage": 18,
+        "type": "ranged"
+    },
+    {
+        "name": "Scimitar",
+        "min_damage": 12,
+        "max_damage": 20,
+        "type": "melee"
+    },
+    {
+        "name": "Throwing star",
+        "min_damage": 4,
+        "max_damage": 10,
+        "type": "ranged"
+    },
+    {
+        "name": "Morning star",
+        "min_damage": 14,
+        "max_damage": 26,
+        "type": "melee"
+    },
+    {
+        "name": "Hand crossbow",
+        "min_damage": 7,
+        "max_damage": 13,
+        "type": "ranged"
+    },
+    {
+        "name": "Greatsword",
+        "min_damage": 22,
+        "max_damage": 40,
+        "type": "melee"
+    },
+    {
+        "name": "Hunting bow",
+        "min_damage": 5,
+        "max_damage": 11,
+        "type": "ranged"
+    },
+    {
+        "name": "Trident",
+        "min_damage": 10,
+        "max_damage": 19,
+        "type": "melee"
+    },
+    {
+        "name": "Chakram",
+        "min_damage": 6,
+        "max_damage": 14,
+        "type": "ranged"
+    }
+]
