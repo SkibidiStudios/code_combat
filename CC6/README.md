@@ -1,116 +1,100 @@
-# 🛡️ RPG Combat System — MVC Architecture (Python)
+# 🎮 Code Combat 6
 
-Questo progetto implementa un sistema di combattimento RPG in Python seguendo un approccio **MVC (Model–View–Controller)** ispirato alla guida di Marco Farina:
+This repository contains **Code Combat 6** developed by 4AINFO.
+The class is divided into multiple teams, each working on a **dedicated feature branch**.
 
-🔗 https://marcofarina.notion.site/Parte-5-implementare-l-MVC-2afaa73c260f80b084dac4ec169fc886
-
-L’obiettivo è strutturare il codice in modo pulito, modulare e facilmente estendibile, separando chiaramente:
-
-- **Model** → logica di gioco (Player, Weapon, Potion)
-- **View** → visualizzazione dell’azione (HUD, log, messaggi)
-- **Controller** → gestione del flusso del combattimento e input dell’utente
+The project follows a **controlled Git workflow** to avoid conflicts and keep the code organized.
 
 ---
 
-## 🎮 Funzionalità Principali
+## 🔀 Branch Structure (IMPORTANT)
 
-### ✔️ Sistema completo di combattimento
-- Attacchi basati su **danni variabili dell’arma**
-- Modificatori basati su **Forza** o **Destrezza**
-- Gestione della vita e morte del personaggio
-- Armi corpo a corpo (“melee”) e a distanza (“ranged”)
+This repository uses **three levels of branches**:
 
-### ✔️ Sistema di pozioni con effetti
-- Pozioni di cura (`heal`)
-- Buff di forza (`buff_str`)
-- Buff di destrezza (`buff_dex`)
-- Applicazione degli effetti con durata e stack controllato
+### 🟢 `main`
+- Stable and final version of the project
+- Used only for delivery or evaluation
+- ❌ Do NOT push directly
 
-### ✔️ Inventario basilare
-- Fino a **3 pozioni** trasportabili
-- Equipaggiamento di 1 arma alla volta
-- Gestione sicura tramite proprietà e validazione
+### 🟡 `dev`
+- Integration branch
+- Contains all **approved and merged features**
+- ❌ Do NOT push directly
+- ✅ Only Pull Requests are allowed
 
-### ✔️ Gestione eccezioni robusta
-Tutte le classi implementano controlli rigorosi su:
-- tipi non validi (`TypeError`)
-- valori fuori range (`ValueError`)
-- oggetti non utilizzabili
-- settaggi non ammessi
-
-Questo impedisce bug silenziosi e fornisce feedback immediato durante lo sviluppo.
+### 🔵 `feature/*`
+- Work branches for each group
+- Each group works **only on its assigned branch**
+- Pull Requests must target `dev`
 
 ---
 
-# 🧩 Architettura del Progetto — MVC
+## 👥 Feature Branches and Responsibilities
 
-Il codice è organizzato secondo il pattern **Model–View–Controller** come suggerito nella guida Notion.
+Each group has **one predefined feature branch**.
 
----
+| Branch | Group | Responsibility | Folder to edit |
+|------|------|---------------|----------------|
+| `feature/core-system` | G1 | Core classes, inventory, slots | `core/` |
+| `feature/logic-combat-system` | G2 | Combat loop & logic | `engine/` |
+| `feature/ui-render-engine` | G3 | UI rendering & menus | `ui/` |
+| `feature/data-json-loader` | G4 | JSON loaders & validators | `data/` |
+| `feature/game-design` | G5 | Game Design Documents | `design/` |
+| `feature/species-system` | G6 | Species & enemies | `species/` |
+| `feature/classes-abilities` | G7 | Player classes & abilities | `classes/` |
+| `feature/items-melee-armor` | G8 | Melee weapons & armor | `items/melee/` |
+| `feature/items-ranged-magic` | G9 | Ranged & magic items | `items/ranged/`, `items/magic/` |
+| `feature/qa-testing` | G10 | Testing & debugging | `tests/` |
+| `feature/ui-assets` | G11 | Sprites & UI assets | `assets/` |
+| `feature/content-world-data` | G12 | Lore & world JSON data | `data/` |
 
-## 🟦 MODEL — Logica di Gioco
-
-### `Player`
-- Nome, salute, statistiche
-- Arma equipaggiata
-- Pozioni e buff attivi
-- Metodo `attack()` con calcolo danni
-- Metodo `should_use_potion()` per IA basilare
-- Serializzazione stato (`get_state_dict()`)
-
-### `Weapon`
-- Tipo arma (`melee` / `ranged`)
-- Range danni (`min_damage`, `max_damage`)
-- `get_damage()` ritorna un valore random nel range
-
-### `Potion`
-- Effetti disponibili: heal, buff_str, buff_dex
-- Durata effetti
-- Applicazione al personaggio (`apply_to`)
-- Controllo buff già presenti
+📌 **You must only modify your assigned folder.**
 
 ---
 
-## 🟩 VIEW — Interfaccia e Output
-Mostra informazioni a schermo senza modificare lo stato.
+## 🧑‍💻 How to Start Working
+
+1. Clone the repository  
+   ```bash
+   git clone <repo-url>
+   ```
+
+2. Checkout your group branch  
+   ```bash
+   git checkout feature/your-branch-name
+   ```
+
+3. Work only inside your assigned folder
+
+4. Commit your changes  
+   ```bash
+   git add .
+   git commit -m "Short and clear message"
+   ```
+
+5. Push your branch  
+   ```bash
+   git push origin feature/your-branch-name
+   ```
+
+6. Open a **Pull Request → `dev`**
 
 ---
 
-## 🟥 CONTROLLER — Gestione del Combattimento
-Coordina Model e View (turni, logica battaglia, condizioni vittoria).
+## 🔁 Pull Request Rules
+
+- One Pull Request per feature
+- Modify only your group folder
+- No direct pushes to `main` or `dev`
+- Fix errors if requested during review
+
+Pull Requests that break the rules will be rejected.
 
 ---
 
-# 🔧 Installazione
+## 🧪 Testing
 
-```bash
-git clone https://github.com/tuo-username/tuo-repo.git
-cd tuo-repo
-python3 main.py
-```
+- All tests are located in `tests/`
+- QA group validates merges
+- If tests fail, the PR will not be merged
 
----
-
-# 📁 Struttura consigliata
-
-```
-📦 rpg-mvc
- ├── models/
- │   ├── player.py
- │   ├── weapon.py
- │   └── potion.py
- ├── controller/
- │   └── game_controller.py
- ├── view/
- │   └── console_view.py
- ├── data/
- │   └── weapon.json
- ├── main.py
- └── README.md
-```
-
----
-
-# 🙋‍♂️ Autore
-
-**Daniele Porcaro**
