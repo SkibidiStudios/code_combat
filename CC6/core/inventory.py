@@ -26,7 +26,7 @@ class Inventory:
         if item.item_type not in ['Weapon', 'Armor', 'shield', 'jewelry']:
             raise ValueError("item must be of type 'Weapon', 'Armor', 'shield', or 'jewelry'")
         
-        self.slots[slot] = item
+        self.slots[slot] = item # type: ignore
 
     def add_consumable(self, slot: str, item: Item):
         """Add a consumable item to a specific consumable slot."""
@@ -37,7 +37,7 @@ class Inventory:
         if item.item_type != 'Consumable':
             raise ValueError("item must be of type 'Consumable'")
         
-        self.consumables[slot] = item
+        self.consumables[slot] = item # type: ignore
 
     def __str__(self):
         return f"Inventory: {self.slots}, Consumables: {self.consumables}"
