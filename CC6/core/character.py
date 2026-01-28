@@ -3,13 +3,13 @@ from inventory import Inventory
 from random import randint
 
 class Character:
-    def __init__(self, name, health, Mana, damage, magic_damage, defense, magic_defense, critical_chance):
+    def __init__(self, name, health, mana, damage, magic_damage, defense, magic_defense, critical_chance, specie, char_class):
         if not isinstance(name, str):
             raise TypeError("name must be a string")
         if not isinstance(health, int) or health < 0:
             raise ValueError("health must be a non-negative integer")
-        if not isinstance(Mana, int) or Mana < 0:
-            raise ValueError("Mana must be a non-negative integer")
+        if not isinstance(mana, int) or mana < 0:
+            raise ValueError("mana must be a non-negative integer")
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be a non-negative integer")
         if not isinstance(magic_damage, int) or magic_damage < 0:
@@ -23,19 +23,22 @@ class Character:
 
         self.name = name
         self.health = health
-        self.Mana = Mana
+        self.Mana = mana
         self.damage = damage
         self.magic_damage = magic_damage
         self.defense = defense
         self.magic_defense = magic_defense
         self.critical_chance = critical_chance
         self.inventory = Inventory()
+        self.max_health = health
+        self.max_mana = mana
+        self.specie = specie
+        self.char_class = char_class
 
     @final
     def is_alive(self) -> bool:
         """check if the character is alive"""
         return self.health > 0
-    
 
     @final
     def take_damage(self, amount: int, damage_type: str):
