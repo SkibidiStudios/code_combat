@@ -31,7 +31,6 @@ class Character:
         self.critical_chance = critical_chance
         self.inventory = Inventory()
 
-
     @final
     def is_alive(self) -> bool:
         """check if the character is alive"""

@@ -8,7 +8,7 @@ class Inventory:
             'helmet': None,
             'armor': None,
             'boots': None,
-            'jawelry_1': None,
+            'jewelry_1': None,
             'jewelry_2': None,
             }
         self.consumables = {
