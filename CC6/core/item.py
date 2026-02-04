@@ -20,15 +20,15 @@ class Item:
         self.properties = {}
 
     def add_property(self, property_name: str):
-        """Aggiunge una proprietà all'oggetto (es. Fuoco, Ghiaccio, Maledetta)"""
+        """write a property to the item"""
         self.properties[property_name] = True
     
     def has_property(self, property_name: str) -> bool:
-        """Controlla se l'oggetto ha una certa proprietà"""
+        """check if the item has a specific property"""
         return property_name in self.properties
 
     def get_full_name(self) -> str:
-        """Restituisce il nome completo con eventuali aggettivi dalle proprietà"""
+        """Get the full name of the item, including its properties."""
         if self.properties:
             props = ' '.join(self.properties)
             return f"{props} {self.name}"
