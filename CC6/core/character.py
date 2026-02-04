@@ -34,6 +34,7 @@ class Character:
         self.max_mana = mana
         self.specie = specie
         self.char_class = char_class
+        #ciao
 
     @final
     def modifier(self, stat: str) -> int:
