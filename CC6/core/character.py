@@ -91,16 +91,13 @@ class Character:
         is_critical = self.critical_hit()
         if self.inventory.slots['first_hand'] is not None:
             weapon = self.inventory.slots['first_hand']
-            weapon_damage = weapon.damage  # Example base damage for the weapon
+            weapon_damage = weapon.damage
         else:
-            weapon_damage = 1  
-        if isinstance(self.inventory.slots['first_hand'], Item):
-            if self.inventory.slots['first_hand'].weapon_stats == 'dexterity':
-                total_damage = self.modifier('dexterity') * 2 if is_critical else self.modifier('dexterity') + weapon_damage
-            else:
-                total_damage = self.modifier('strength') * 2 if is_critical else self.modifier('strength') + weapon_damage
+            weapon_damage = 1
+        if is_critical:
+            total_damage = self.modifier('strength') * 2 + weapon_damage
         else:
-            total_damage = self.modifier('strength') * 2 if is_critical else self.modifier('strength') + weapon_damage
+            total_damage = self.modifier('strength') + weapon_damage
         enemy.take_damage(total_damage, 'physical')
         return total_damage
     
@@ -109,8 +106,15 @@ class Character:
         if not isinstance(enemy, Character):
             raise TypeError("enemy must be an instance of Character")
         is_critical = self.critical_hit()
-        base_magic_damage = 5  
-        total_damage = self.modifier('intelligence') * 2 if is_critical else self.modifier('intelligence') + base_magic_damage
+        if self.inventory.slots['first_hand'] is not None:
+            weapon = self.inventory.slots['first_hand']
+            weapon_damage = weapon.magic_damage
+        else:
+            weapon_damage = 1
+        if is_critical:
+            total_damage = self.modifier('intelligence') * 2 + weapon_damage
+        else:
+            total_damage = self.modifier('intelligence') + weapon_damage
         enemy.take_damage(total_damage, 'magic')
         return total_damage
 
