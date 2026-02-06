@@ -4,17 +4,17 @@ class Armor(Item):
 
     pass
 
-class Heavy_Armor(Armor):
+class HeavyArmor(Armor):
     pass
 
 
-class Mid_Armor(Armor):
+class MidArmor(Armor):
     pass
 
 
-class Light_Armor(Armor):
+class LightArmor(Armor):
     pass
 
 
-class Magic_Vest(Armor):
+class MagicVest(Armor):
     pass

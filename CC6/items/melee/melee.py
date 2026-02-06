@@ -1,8 +1,8 @@
 from core.item import Item
 
 class MeleeWeapon(Item):
-    def __init__(self, name, attribute, min_damage, max_damage, two_handed, rarity, description, item_type):
-        super().__init__(name, item_type, rarity, description)
+    def __init__(self, name, attribute, min_damage, max_damage, two_handed, rarity, description):
+        super().__init__(name, "Weapon", rarity, description)
         self.weapon_type = "melee damage"
         self.attribute = attribute
         self.min_damage = min_damage
