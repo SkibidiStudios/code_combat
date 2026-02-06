@@ -4,9 +4,9 @@ class Shield(Item):
 
     pass
 
-class Light_Shield(Shield):
+class LightShield(Shield):
     pass
 
 
-class Heavy_Shield(Shield):
+class HeavyShield(Shield):
     pass
