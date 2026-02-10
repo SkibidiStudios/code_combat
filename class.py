@@ -4,19 +4,17 @@ import random
 from item import Item
 
 class Character:
-    def __init__(self, name, health, mana, defense, magic_defense, critical_chance, specie, char_class):
+    def __init__(self, name, health, mana, defense, magic_defense, specie, char_class):
         if not isinstance(name, str):
-            raise TypeError("name must be a string")
+            raise TypeError("Name must be a string")
         if not isinstance(health, int) or health < 0:
-            raise ValueError("health must be a non-negative integer")
+            raise ValueError("Health must be a non-negative integer")
         if not isinstance(mana, int) or mana < 0:
-            raise ValueError("mana must be a non-negative integer")
+            raise ValueError("Mana must be a non-negative integer")
         if not isinstance(defense, int) or defense < 0:
-            raise ValueError("defense must be a non-negative integer")
+            raise ValueError("Defense must be a non-negative integer")
         if not isinstance(magic_defense, int) or magic_defense < 0:
             raise ValueError("magic_defense must be a non-negative integer")
-        if not isinstance(critical_chance, float) or not (0.0 <= critical_chance <= 1.0):
-            raise ValueError("critical_chance must be a float between 0.0 and 1.0")
 
         self.name = name
         self.stats = {
@@ -28,13 +26,11 @@ class Character:
         self.Mana = mana
         self.defense = defense
         self.magic_defense = magic_defense
-        self.critical_chance = critical_chance
         self.inventory = Inventory()
         self.max_health = health
         self.max_mana = mana
         self.specie = specie
         self.char_class = char_class
-        #ciao
 
     @final
     def modifier(self, stat: str) -> int:
@@ -48,35 +44,19 @@ class Character:
         """check if the character is alive"""
         return self.health > 0
 
+#funzione per prendere danno, considerando la difesa e la difesa magica, e ridurre di conseguenza la salute
     @final
-    def take_damage(self, amount: int, damage_type: str):
-        """Reduces the character's health by the specified damage amount based on damage type."""
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("amount must be a non-negative integer")
-        if damage_type not in ['physical', 'magic']:
-            raise ValueError("damage_type must be either 'physical' or 'magic'")
-        
-        if damage_type == 'physical':
-            self.__take_physical_damage(amount)
-        elif damage_type == 'magic':
-            self.__take_magic_damage(amount)
+    def take_damage(self, physical_damage: int = 0, magical_damage: int = 0):
+        """takes damage and reduces health accordingly, considering defense and magic defense."""
+        if not isinstance(physical_damage, int) or physical_damage < 0:
+            raise ValueError("physical_damage must be a non-negative integer")
+        if not isinstance(magical_damage, int) or magical_damage < 0:
+            raise ValueError("magical_damage must be a non-negative integer")
+        physical_damage_after_defense = max(0, physical_damage - self.defense)
+        magical_damage_after_defense = max(0, magical_damage - self.magic_defense)
+        total_damage = physical_damage_after_defense + magical_damage_after_defense
+        self.health = max(0, self.health - total_damage)
 
-    def __take_physical_damage(self, amount: int):
-        """Reduces the character's health by the specified damage amount after applying defense."""
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("amount must be a non-negative integer")
-        
-        effective_damage = max(0, amount - self.defense)
-        self.health = max(0, self.health - effective_damage)
-    
-    def __take_magic_damage(self, amount: int):
-        """Reduces the character's health by the specified magic damage amount after applying magic defense."""
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("amount must be a non-negative integer")
-        
-        effective_damage = max(0, amount - self.magic_defense)
-        self.health = max(0, self.health - effective_damage)
-    
     @final
     def heal(self, amount: int):
         """Increases the character's health by the specified amount."""
@@ -85,40 +65,17 @@ class Character:
         
         self.health += amount
 
-    def physical_attack(self, enemy: 'Character') -> int:
-        """Calculates and returns the damage dealt to an enemy character."""
-        if not isinstance(enemy, Character):
-            raise TypeError("enemy must be an instance of Character")
-        is_critical = self.critical_hit()
-        if self.inventory.slots['first_hand'] is not None:
-            weapon = self.inventory.slots['first_hand']
-            weapon_damage = weapon.damage
+#funzione per attaccare un nemico, considerando l'arma equipaggiata e i relativi danni fisici e magici, e aggiungendo i modificatori delle statistiche
+    def attack(self, target):
+        """Performs an attack on the target enemy."""
+        if self.inventory.slots['first_hand'] is None:
+            physical_damage = 1 + self.modifier('strength')
+            magical_damage = 0
         else:
-            weapon_damage = 1
-        if is_critical:
-            total_damage = self.modifier('strength') * 2 + weapon_damage
-        else:
-            total_damage = self.modifier('strength') + weapon_damage
-        enemy.take_damage(total_damage, 'physical')
-        return total_damage
-    
-    def magic_attack(self, enemy: 'Character') -> int:
-        """Calculates and returns the magic damage dealt to an enemy character."""
-        if not isinstance(enemy, Character):
-            raise TypeError("enemy must be an instance of Character")
-        is_critical = self.critical_hit()
-        if self.inventory.slots['first_hand'] is not None:
-            weapon = self.inventory.slots['first_hand']
-            weapon_damage = weapon.magic_damage
-        else:
-            weapon_damage = 1
-        if is_critical:
-            total_damage = self.modifier('intelligence') * 2 + weapon_damage
-        else:
-            total_damage = self.modifier('intelligence') + weapon_damage
-        enemy.take_damage(total_damage, 'magic')
-        return total_damage
-
-    def critical_hit(self) -> bool:
-        """Determines if an attack is a critical hit based on the character's critical chance."""
-        return random.random() < self.critical_chance
+            physical_damage, magical_damage = self.inventory.slots['first_hand'].get_damage()
+            stat_weapon = self.inventory.slots['first_hand'].scaling_stat
+            if stat_weapon in ['strength', 'dexterity']:
+                physical_damage += self.modifier(stat_weapon)
+            elif stat_weapon == 'intelligence':
+                magical_damage += self.modifier(stat_weapon)
+        return physical_damage, magical_damage
