@@ -1,0 +1,2 @@
+class Assassino(Character):
+    pass
