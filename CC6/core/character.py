@@ -44,6 +44,7 @@ class Character:
         """check if the character is alive"""
         return self.health > 0
 
+#funzione per prendere danno, considerando la difesa e la difesa magica, e ridurre di conseguenza la salute
     @final
     def take_damage(self, physical_damage: int = 0, magical_damage: int = 0):
         """takes damage and reduces health accordingly, considering defense and magic defense."""
@@ -64,6 +65,7 @@ class Character:
         
         self.health += amount
 
+#funzione per attaccare un nemico, considerando l'arma equipaggiata e i relativi danni fisici e magici, e aggiungendo i modificatori delle statistiche
     def attack(self, target):
         """Performs an attack on the target enemy."""
         if self.inventory.slots['first_hand'] is None:
