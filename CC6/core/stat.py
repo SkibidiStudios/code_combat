@@ -1,5 +1,5 @@
 class Stats:
-    def __init__(self, strength: 'StatsType', dexterity: 'StatsType', intelligence: 'StatsType'):
+    def __init__(self, strength: int, dexterity: int, intelligence: int):
         self.base_stats = {
             'strength': strength,
             'dexterity': dexterity,

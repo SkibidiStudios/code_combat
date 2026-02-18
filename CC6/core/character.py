@@ -1,8 +1,9 @@
-from typing import Any, final
+from typing import Any, final, overload
+from abc import ABC, abstractmethod
 from inventory import Inventory
 import random
 from item import Item
-from stat import Stats
+from stat import Stats # type: ignore
 
 class Character:
     def __init__(self, name: str, health: int, base_str: int, base_dex: int, base_int: int, defense: int = 0, magic_defense: int = 0):
@@ -32,7 +33,6 @@ class Character:
 
         total_damage = 0
         
-        # 1. Calcoliamo i danni fisici (se ci sono)
         if 'physical_damage' in damage_dict:
             danno_fisico = damage_dict['physical_damage']
             danno_reale = danno_fisico - self.defense
@@ -40,7 +40,6 @@ class Character:
             if danno_reale > 0:
                 total_damage += danno_reale
         
-        # 2. Calcoliamo i danni magici (se ci sono)
         if 'magical_damage' in damage_dict:
             danni_magici = damage_dict['magical_damage']
             # Controlliamo ogni elemento magico (es. fuoco, ghiaccio)
@@ -55,29 +54,6 @@ class Character:
         if self.health < 0:
             self.health = 0
 
-    def get_damage(self) -> dict[str, Any]:
-        """
-        Calcola i danni generati dal personaggio. 
-        Da sovrascrivere nelle classi figlie (es. Player per usare le armi o Enemy per gli attacchi dei mostri).
-        """
-        # Esempio di attacco disarmato base che scala sulla forza
-        base_physical = self.stats.get('strength')
-        return {
-            'physical_damage': base_physical,
-            'magical_damage': {}
-        }
-
+    @abstractmethod
     def attack(self, target: 'Character') -> dict[str, Any]:
-        """Attacks the target character and returns the damage dealt as a dictionary."""
-        if not isinstance(target, Character):
-            raise TypeError("Target must be an instance of Character")
-        if not self.is_alive():
-            raise ValueError(f"{self.name} is dead and cannot attack.")
-        
-        # 1. Prendi i danni che genera questo personaggio
-        danni = self.get_damage()
-        
-        # 2. Passa i danni al bersaglio
-        target.take_damage(danni)
-        
-        print(f"{self.name} attacca {target.name}!")
+        pass
