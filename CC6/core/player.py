@@ -10,10 +10,10 @@ class Player(Character):
         self.max_mana = mana
         self.char_class = None
     
-    def add_class(self, char_class: 'CharacterClass'): # type: ignore
+    def add_class(self, char_class: str): # type: ignore
         """Assign a character class to the player."""
         if not isinstance(char_class, str):
-            raise TypeError("char_class must be a CharacterClass instance")
+            raise TypeError("char_class must be a str")
         self.char_class = char_class
     
     @override
