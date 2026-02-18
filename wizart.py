@@ -1,12 +1,4 @@
-#Selezionando questa classe si ottengono +4 Intelligenza e +2 Destrezza
-#Abilità attiva: Palla di fuoco
-#Costo: 25 MP
-#
-#
-#Cooldown: 0 turni
-#
-#
-#Effetto: Lancia una palla di fuoco che fa 40 DMG che scalano su intelligenza 
+
 from core.character import Character
 from core.player import Player
 class Mago:
