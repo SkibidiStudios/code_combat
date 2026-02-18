@@ -1,16 +1,6 @@
-#Combo Strike
-#Costo: 20 MP
-#Cooldown: 4 turni
-#Effetto: 3 colpi da 60% del danno base ciascuno
 from core.character import Character
 from core.player import Player
-#example return get_damage(player)
-#get_damage(player) --> {
-#	'physical_damage': randint(3, 10) + (mod. forza_player),
-#	'magical_damage': {
-#		'fuoco': 4
-#	}
-#}
+
 class Warrior:
     def __init__(self):
         self.add_strength = 4

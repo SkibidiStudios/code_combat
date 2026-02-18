@@ -1,14 +1,3 @@
-#Selezionando questa classe si ottengono +6 Destrezza
-#
-#
-#Abilità attiva: Evasione
-#Costo: 20 MP
-#
-#
-#Cooldown: 3 turni
-#
-#
-#Effetto: schiva al 100% il prossimo attacco che ricevi
 from core.character import Character
 from core.player import Player
 class Assassino:
