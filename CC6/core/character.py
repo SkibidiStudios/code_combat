@@ -1,82 +1,59 @@
-from typing import final
+from typing import Any, final, overload
+from abc import ABC, abstractmethod
 from inventory import Inventory
 import random
 from item import Item
+from .stat import Stats # type: ignore
 
 class Character:
-    def __init__(self, name, health, mana, defense, magic_defense, specie, char_class):
+    def __init__(self, name: str, health: int, base_str: int, base_dex: int, base_int: int, defense: int = 0, magic_defense: int = 0):
         if not isinstance(name, str):
             raise TypeError("Name must be a string")
         if not isinstance(health, int) or health < 0:
             raise ValueError("Health must be a non-negative integer")
-        if not isinstance(mana, int) or mana < 0:
-            raise ValueError("Mana must be a non-negative integer")
         if not isinstance(defense, int) or defense < 0:
             raise ValueError("Defense must be a non-negative integer")
         if not isinstance(magic_defense, int) or magic_defense < 0:
-            raise ValueError("magic_defense must be a non-negative integer")
-
+            raise ValueError("Magic_defense must be a non-negative integer")
+        
         self.name = name
-        self.stats = {
-            'strength': 10,
-            'dexterity': 10,
-            'intelligence': 10,
-        }
+        self.stats = Stats(strength=base_str, dexterity=base_dex, intelligence=base_int)
+        
         self.health = health
-        self.Mana = mana
+        self.max_health = health
         self.defense = defense
         self.magic_defense = magic_defense
-        self.inventory = Inventory()
-        self.max_health = health
-        self.max_mana = mana
-        self.specie = specie
-        self.char_class = char_class
 
-    @final
-    def modifier(self, stat: str) -> int:
-        """Calculate the modifier for a given stat."""
-        if stat not in self.stats:
-            raise ValueError(f"Invalid stat: {stat}")
-        return (self.stats[stat] - 10) // 2
-
-    @final
     def is_alive(self) -> bool:
-        """check if the character is alive"""
+        """Check if the character is alive"""
         return self.health > 0
 
-#funzione per prendere danno, considerando la difesa e la difesa magica, e ridurre di conseguenza la salute
-    @final
-    def take_damage(self, physical_damage: int = 0, magical_damage: int = 0):
-        """takes damage and reduces health accordingly, considering defense and magic defense."""
-        if not isinstance(physical_damage, int) or physical_damage < 0:
-            raise ValueError("physical_damage must be a non-negative integer")
-        if not isinstance(magical_damage, int) or magical_damage < 0:
-            raise ValueError("magical_damage must be a non-negative integer")
-        physical_damage_after_defense = max(0, physical_damage - self.defense)
-        magical_damage_after_defense = max(0, magical_damage - self.magic_defense)
-        total_damage = physical_damage_after_defense + magical_damage_after_defense
-        self.health = max(0, self.health - total_damage)
+    def take_damage(self, damage_dict: dict[str, Any]):
+        """Apply incoming damage to the character, taking into account defenses."""
 
-    @final
-    def heal(self, amount: int):
-        """Increases the character's health by the specified amount."""
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("amount must be a non-negative integer")
+        total_damage = 0
         
-        self.health += amount
+        if 'physical_damage' in damage_dict:
+            danno_fisico = damage_dict['physical_damage']
+            danno_reale = danno_fisico - self.defense
+            
+            if danno_reale > 0:
+                total_damage += danno_reale
+        
+        if 'magical_damage' in damage_dict:
+            danni_magici = damage_dict['magical_damage']
+            # Controlliamo ogni elemento magico (es. fuoco, ghiaccio)
+            for elemento, danno in danni_magici.items():
+                danno_reale = danno - self.magic_defense
+                
+                if danno_reale > 0:
+                    total_damage += danno_reale
+        
+        self.health -= total_damage
+        
+        if self.health < 0:
+            self.health = 0
 
-#funzione per attaccare un nemico, considerando l'arma equipaggiata e i relativi danni fisici e magici, e aggiungendo i modificatori delle statistiche
-    def attack(self, target):
-        """Performs an attack on the target enemy."""
-        if self.inventory.slots['first_hand'] is None:
-            physical_damage = 1 + self.modifier('strength')
-            magical_damage = 0
-        else:
-            physical_damage, magical_damage = self.inventory.slots['first_hand'].get_damage()
-            stat_weapon = self.inventory.slots['first_hand'].scaling_stat
-            if stat_weapon in ['strength', 'dexterity']:
-                physical_damage += self.modifier(stat_weapon)
-            elif stat_weapon == 'intelligence':
-                magical_damage += self.modifier(stat_weapon)
-        return physical_damage, magical_damage
-
+    @abstractmethod
+    def attack(self, target: 'Character') -> dict[str, Any]:
+        pass
