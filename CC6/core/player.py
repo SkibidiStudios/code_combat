@@ -1,5 +1,5 @@
-from character import Character
-from inventory import Inventory
+from .character import Character
+from .inventory import Inventory
 from typing import override, Any
 
 class Player(Character):
