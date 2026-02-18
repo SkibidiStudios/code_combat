@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from inventory import Inventory
 import random
 from item import Item
-from stat import Stats # type: ignore
+from .stat import Stats # type: ignore
 
 class Character:
     def __init__(self, name: str, health: int, base_str: int, base_dex: int, base_int: int, defense: int = 0, magic_defense: int = 0):
