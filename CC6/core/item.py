@@ -17,19 +17,3 @@ class Item:
         self.item_type = item_type
         self.rarity = rarity
         self.description = description
-        self.properties = {}
-
-    def add_property(self, property_name: str):
-        """Aggiunge una proprietà all'oggetto (es. Fuoco, Ghiaccio, Maledetta)"""
-        self.properties[property_name] = True
-    
-    def has_property(self, property_name: str) -> bool:
-        """Controlla se l'oggetto ha una certa proprietà"""
-        return property_name in self.properties
-
-    def get_full_name(self) -> str:
-        """Restituisce il nome completo con eventuali aggettivi dalle proprietà"""
-        if self.properties:
-            props = ' '.join(self.properties)
-            return f"{props} {self.name}"
-        return self.name
