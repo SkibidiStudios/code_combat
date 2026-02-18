@@ -19,5 +19,6 @@ class Ring(Item):
         self.notes = notes
 
     def equip(self, target):
-        target.stats[self.bonus_type] += self.value
-        print(f"{target.name} gains +{self.value} {self.bonus_type}.")
+       current_value = getattr(target, self.bonus_type, 0)
+       setattr(target, self.bonus_type, current_value + self.value)
+       print(f"{target.name} gains +{self.value} {self.bonus_type}.")

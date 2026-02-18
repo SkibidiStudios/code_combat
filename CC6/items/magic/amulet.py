@@ -21,6 +21,10 @@ class Amulet(Item):
     def equip(self, target):
         if self.value is not None:
             target.stats[self.bonus_type] += self.value
-            print(f"{target.name} gains +{self.value} {self.bonus_type}.")
-        else:
-            print(f"{target.name} gains special effect: {self.notes}.")
+    stats = getattr(target, "stats", None)
+    if isinstance(stats, dict):
+                # Initialize the stat if it does not exist yet.
+                stats[self.bonus_type] = stats.get(self.bonus_type, 0) + self.value
+    else:
+                current_value = getattr(target, self.bonus_type, 0)
+                setattr(target, self.bonus_type, current_value + self.value)

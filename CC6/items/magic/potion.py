@@ -29,18 +29,17 @@ class Potion(Item):
 
     def use(self, target):
         if self.effect == "heal":
-            target.hp += self.value
-            print(f"{target.name} recovers {self.value} HP.")
+            heal_method = getattr(target, "heal", None)
+            if callable(heal_method):
+                heal_method(self.value)
+            elif hasattr(target, "health"): 
+                target.health += self.value
 
-        elif self.effect == "restore_MP":
-            target.mp += self.value
-            print(f"{target.name} recovers {self.value} MP.")
-
+     
+        elif self.effect == "buff_DEF":
+            target.defense += self.value
+            print(f"{target.name} gains +{self.value} DEF.")
         elif self.effect.startswith("buff_"):
             stat = self.effect.replace("buff_", "")
             target.stats[stat] += self.value
             print(f"{target.name} gains +{self.value} {stat}.")
-
-        elif self.effect == "buff_DEF":
-            target.defense += self.value
-            print(f"{target.name} gains +{self.value} DEF.")
