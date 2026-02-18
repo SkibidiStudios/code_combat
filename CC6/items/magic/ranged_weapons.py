@@ -1,16 +1,11 @@
 from core.item import Item 
 from core.character import Character
-from core.enums import Rarity, ItemType #type: ignore
 from typing import Any
 from random import randint
+from equipment import Equipment
 
 
-class Weapon(Item):
-    """
-    Weapon implementation based on table values:
-    name, rarity, type, scaling, min_damage, max_damage
-    """
-
+class Weapon(Equipment):
     def __init__(
         self,
         name: str,
@@ -27,8 +22,8 @@ class Weapon(Item):
     ):
         super().__init__(
             name=name,
-            item_type = ItemType.WEAPON,
-            rarity= Rarity(rarity),
+            item_type="Weapon",
+            rarity=rarity,
             description=description
         )
 

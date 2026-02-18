@@ -30,7 +30,7 @@ class Character:
     
     def get_modifier(self, stat_name: str) -> int:
         """return the modifier for a given stat"""
-        return (self.stats.get_stat(stat_name) -10) // 2
+        return (self.stats.get(stat_name) - 10) // 2
 
     def take_damage(self, damage_dict: dict[str, Any]):
         """Apply incoming damage to the character, taking into account defenses."""
@@ -46,7 +46,6 @@ class Character:
         
         if 'magical_damage' in damage_dict:
             danni_magici = damage_dict['magical_damage']
-            # Controlliamo ogni elemento magico (es. fuoco, ghiaccio)
             for elemento, danno in danni_magici.items():
                 danno_reale = danno - self.magic_defense
                 
