@@ -9,12 +9,19 @@ class Player(Character):
         self.mana = mana
         self.max_mana = mana
         self.char_class = None
-    
+
     def add_class(self, char_class: 'CharacterClass'): # type: ignore
         """Assign a character class to the player."""
         if not isinstance(char_class, str):
             raise TypeError("char_class must be a CharacterClass instance")
         self.char_class = char_class
+        for stat, increase in char_class.aumento_caratteristiche:
+            if stat == 'strength':
+                self.stats.strength += increase
+            if stat == 'dexterity':
+                self.stats.dexterity += increase
+            if stat == 'intelligence':
+                self.stats.intelligence += increase
     
     @override
     def attack(self, target: 'Character') -> dict[str, Any]:
