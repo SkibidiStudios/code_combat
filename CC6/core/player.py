@@ -9,7 +9,7 @@ class Player(Character):
         self.mana = mana
         self.max_mana = mana
         self.char_class = None
-    
+
     def add_class(self, char_class: 'CharacterClass'): # type: ignore
         """Assign a character class to the player."""
         if not isinstance(char_class, str):
