@@ -8,7 +8,3 @@ class MeleeWeapon(Item):
         self.min_damage = min_damage
         self.max_damage = max_damage
         self.two_handed = two_handed
-
-
-
-
