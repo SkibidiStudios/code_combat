@@ -13,7 +13,7 @@ class Armor(Item):
         job = character_job.upper()
 
         if self.armor_class == "Heavy":
-            return job == "WARRIOR"
+            return job == "WARRIORS"
 
         if self.armor_class == "Medium":
             return job != "MAGE"

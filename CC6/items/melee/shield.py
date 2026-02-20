@@ -22,7 +22,7 @@ class Shield(Item):
 
         job = character_class.lower()
 
-        if job == "warrior":
+        if job == "Warrior":
             return True
 
         return self.weight_type == "light"
