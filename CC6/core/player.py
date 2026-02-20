@@ -17,11 +17,11 @@ class Player(Character):
         self.char_class = char_class
         for stat, increase in char_class.aumento_caratteristiche:
             if stat == 'strength':
-                self.stats.strength += increase
+                self.stats.base_stats['strength'] += increase
             if stat == 'dexterity':
-                self.stats.dexterity += increase
+                self.stats.base_stats['dexterity'] += increase
             if stat == 'intelligence':
-                self.stats.intelligence += increase
+                self.stats.base_stats['intelligence'] += increase
     
     @override
     def attack(self, target: 'Character') -> dict[str, Any]:
