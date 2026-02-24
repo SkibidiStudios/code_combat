@@ -1,20 +1,8 @@
-from core.item import Item
+class Armor(Equipment):
+    def __init__(self, name, rarity, description, physical_def):
+        super().__init__(name, ItemType.ARMOR, rarity, description)
+        self.physical_defence = physical_def
+        self.magical_defence = {}
 
-class Armor(Item):
-
-    pass
-
-class HeavyArmor(Armor):
-    pass
-
-
-class MidArmor(Armor):
-    pass
-
-
-class LightArmor(Armor):
-    pass
-
-
-class MagicVest(Armor):
-    pass
+    def get_defence(self):
+        return self.magical_defence
