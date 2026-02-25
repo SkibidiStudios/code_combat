@@ -16,9 +16,9 @@ class Warrior:
     def ability(self, user: Player, target: Character):
         """Attack with a combo strike, dealing 3 hits at 60% of base damage each."""
         if isinstance(user, Player) and isinstance(target, Character):
-            if user.mana >= self.ablity_combo_strike['cost'] and self.ablity_combo_strike['current_cooldown'] == 0:
-                user.mana -= self.ablity_combo_strike['cost']
-                self.ablity_combo_strike['current_cooldown'] = self.ablity_combo_strike['cooldown']
+            if user.mana >= self.ablity_stats['cost'] and self.ablity_stats['current_cooldown'] == 0:
+                user.mana -= self.ablity_stats['cost']
+                self.ablity_stats['current_cooldown'] = self.ablity_stats['cooldown']
                 total_damage = {'physical_damage': 0, 'magical_damage': {}}
                 damage_attack1: dict = user.inventory['first_hand'].get_damage(user)
                 damage_attack2: dict = user.inventory['first_hand'].get_damage(user)
