@@ -132,6 +132,68 @@ class Character(pygame.sprite.Sprite):
         elif self.state == SpriteState.TAKE_DAMAGE:
             self.take_damage(dt)
 
+# ------------------- WEAPON ---------------------
+class Weapon(pygame.sprite.Sprite):
+    SPRITE_SIZE = (120, 60)
+
+    def __init__(self, model, frames: dict, x: int, y: int):
+        """
+        Visualizzazione di un'arma coerente con Character.
+
+        :param model: oggetto Weapon con attributi name, type, min_damage, max_damage
+        :param frames: dizionario di immagini (pygame.Surface) per diversi stati, es: {"idle": path, "attack": path}
+        :param x: coordinata x del frame
+        :param y: coordinata y del frame
+        """
+        super().__init__()
+        self.model = model
+        self.frames = {}
+        for k, path in frames.items():
+            img = pygame.image.load(path).convert_alpha()
+            self.frames[k] = pygame.transform.scale(img, self.SPRITE_SIZE)
+
+        self.state = "idle"
+        self.image = self.frames.get("idle", pygame.Surface(self.SPRITE_SIZE))
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+        # Timer per animazioni (opzionale)
+        self.attack_timer = 0
+        self.attack_duration = 0.5
+
+    def trigger_attack_animation(self):
+        """Attiva l'animazione di attacco dell'arma"""
+        if "attack" in self.frames:
+            self.state = "attack"
+            self.attack_timer = 0
+            self.image = self.frames["attack"]
+
+    def update(self, dt):
+        """Aggiorna lo stato dell'arma"""
+        if self.state == "attack":
+            self.attack_timer += dt
+            if self.attack_timer >= self.attack_duration:
+                self.state = "idle"
+                self.image = self.frames.get("idle", self.image)
+                self.attack_timer = 0
+
+    def draw_info(self, surface: pygame.Surface):
+        """Disegna nome, tipo e danno sopra o sotto il frame dell'arma"""
+        font_title = pygame.font.SysFont("Arial", 18, bold=True)
+        font_text = pygame.font.SysFont("Arial", 16)
+        padding_x, padding_y = 5, 5
+
+        name_surf = font_title.render(self.model.name, True, (255, 255, 255))
+        type_surf = font_text.render(f"Tipo: {self.model.type}", True, (255, 255, 255))
+        dmg_surf = font_text.render(f"Danno: {self.model.min_damage}-{self.model.max_damage}", True, (255, 255, 255))
+
+        surface.blit(name_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y))
+        surface.blit(type_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y + 18))
+        surface.blit(dmg_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y + 36))
+
+    def update_position(self, x: int, y: int):
+        """Aggiorna la posizione del frame dell'arma"""
+        self.rect.topleft = (x, y)
+
 # ------------------- UI MANAGER -------------------
 class UIManager:
     def __init__(self, width=800, height=600):
