@@ -5,7 +5,7 @@ class Warrior:
     def __init__(self):
         self.add_strength = 4
         self.add_dexterity = 2
-        self.ablity_combo_strike = {
+        self.ablity_stats = {
             "name": "Combo Strike",
             "cost": 20,
             "cooldown": 4,
@@ -13,7 +13,7 @@ class Warrior:
             "current_cooldown": 0
         }
     
-    def combo_strike(self, user: Player, target: Character):
+    def ability(self, user: Player, target: Character):
         """Attack with a combo strike, dealing 3 hits at 60% of base damage each."""
         if isinstance(user, Player) and isinstance(target, Character):
             if user.mana >= self.ablity_combo_strike['cost'] and self.ablity_combo_strike['current_cooldown'] == 0:

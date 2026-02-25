@@ -5,7 +5,7 @@ class Mago:
 	def __init__(self):
 		self.add_intelligence = 4
 		self.add_dexterity = 2
-		self.ability_fireball = {
+		self.ablity_stats = {
 			"name": "Fireball",
 			"cost": 25,
 			"cooldown": 0,
@@ -13,7 +13,7 @@ class Mago:
 			"current_cooldown": 0
 		}
 	
-	def fireball(self, user: Player, target: Character):
+	def ability(self, user: Player, target: Character):
 		"""Launch a fireball that deals 40 DMG scaling with intelligence."""
 		if isinstance(user, Player) and isinstance(target, Character):
 			if user.mana >= self.ability_fireball['cost'] and self.ability_fireball['current_cooldown'] == 0:
