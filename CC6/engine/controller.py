@@ -2,8 +2,8 @@
 from ui.view import UIManager
 import random
 class GameLoop:
-    def __init__(self):
-        self.species_classes = self.load_species_classes()
+    def __init__(self, species_folder="species"):
+        self.species_classes = self.load_species_classes(species_folder)
         self.ui = UIManager()
 
     def start_game(self):
