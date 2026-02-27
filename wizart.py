@@ -1,4 +1,3 @@
-
 from core.character import Character
 from core.player import Player
 class Mago:
