@@ -1,0 +1,322 @@
++{
+  "weapons": [
+    {
+      "name": "Sword",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "STR",
+      "min_dmg": 4,
+      "max_dmg": 7
+    },
+    {
+      "name": "Greatsword",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "STR",
+      "min_dmg": 7,
+      "max_dmg": 12
+    },
+    {
+      "name": "Battle Axe",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "STR",
+      "min_dmg": 8,
+      "max_dmg": 13
+    },
+    {
+      "name": "Short Sword",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "STR",
+      "min_dmg": 3,
+      "max_dmg": 6
+    },
+    {
+      "name": "Wand",
+      "rarity": "Common",
+      "type": "magic",
+      "stat_scaling": "INT",
+      "min_dmg": 2,
+      "max_dmg": 4
+    },
+    {
+      "name": "Magic Orb",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "INT",
+      "min_dmg": 4,
+      "max_dmg": 7
+    },
+    {
+      "name": "Scepter",
+      "rarity": "Common",
+      "type": "magic",
+      "stat_scaling": "INT",
+      "min_dmg": 3,
+      "max_dmg": 5
+    },
+    {
+      "name": "Dagger",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "DEX",
+      "min_dmg": 2,
+      "max_dmg": 5
+    },
+    {
+      "name": "Dual Blades",
+      "rarity": "Common",
+      "type": "melee",
+      "stat_scaling": "DEX",
+      "min_dmg": 3,
+      "max_dmg": 6
+    },
+    {
+      "name": "Bow",
+      "rarity": "Common",
+      "type": "ranged",
+      "stat_scaling": "DEX",
+      "min_dmg": 3,
+      "max_dmg": 6
+    },
+    {
+      "name": "Crossbow",
+      "rarity": "Common",
+      "type": "ranged",
+      "stat_scaling": "DEX",
+      "min_dmg": 6,
+      "max_dmg": 9
+    },
+    {
+      "name": "Longbow",
+      "rarity": "Common",
+      "type": "ranged",
+      "stat_scaling": "STR",
+      "min_dmg": 5,
+      "max_dmg": 9
+    }
+  ],
+  "potions": [
+    {
+      "name": "Health Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "heal",
+      "value": 20,
+      "note": "Instant heal (HP)"
+    },
+    {
+      "name": "Greater Health Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "heal",
+      "value": 35,
+      "note": "Stronger heal"
+    },
+    {
+      "name": "Strength Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "buff_STR",
+      "value": 2,
+      "note": "+Strength"
+    },
+    {
+      "name": "Dexterity Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "buff_DEX",
+      "value": 2,
+      "note": "+Dexterity"
+    },
+    {
+      "name": "Intellect Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "buff_INT",
+      "value": 2,
+      "note": "+Intellect"
+    },
+    {
+      "name": "Defense Tonic",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "buff_DEF",
+      "value": 3,
+      "note": "+Defense"
+    },
+    {
+      "name": "Mana Potion",
+      "rarity": "Common",
+      "type": "consumable",
+      "effect": "restore_MP",
+      "value": 15,
+      "note": "Restore mana"
+    }
+  ],
+  "rings": [
+    {
+      "name": "Ring of Strength",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "STR",
+      "value": 1,
+      "note": "+Strength"
+    },
+    {
+      "name": "Ring of Dexterity",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "DEX",
+      "value": 1,
+      "note": "+Dexterity"
+    },
+    {
+      "name": "Ring of Intellect",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "INT",
+      "value": 1,
+      "note": "+Intellect"
+    },
+    {
+      "name": "Ring of Life",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "HP_MAX",
+      "value": 10,
+      "note": "+Max Health"
+    },
+    {
+      "name": "Ring of Mana",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "MP_MAX",
+      "value": 10,
+      "note": "+Max Mana"
+    }
+  ],
+  "amulets": [
+    {
+      "name": "Calm Mana Amulet",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "MP_MAX",
+      "value": 10,
+      "note": "Recover 2 MP per turn"
+    },
+    {
+      "name": "Amulet of Vigor",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "HP_MAX",
+      "value": 12,
+      "note": "+Max Health"
+    },
+    {
+      "name": "Amulet of Focus",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "INT",
+      "value": 1,
+      "note": "Spells cost -1 MP"
+    },
+    {
+      "name": "Amulet of Opportunity",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "CRIT%",
+      "value": 1,
+      "note": "+1% Critical Chance"
+    },
+    {
+      "name": "Amulet of the Defender",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "DEF",
+      "value": 10,
+      "note": "10% Damage Reduction"
+    }
+  ],
+  "cloaks": [
+    {
+      "name": "Arcane Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "DEF",
+      "value": 3,
+      "note": "+Defense"
+    },
+    {
+      "name": "Traveler's Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "DEX",
+      "value": 1,
+      "note": "+Dexterity"
+    },
+    {
+      "name": "Warrior's Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "STR",
+      "value": 1,
+      "note": "+Strength"
+    },
+    {
+      "name": "Sage's Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "INT",
+      "value": 1,
+      "note": "+Intellect"
+    },
+    {
+      "name": "Breath Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "MP_MAX",
+      "value": null,
+      "note": "Regenerate 2 MP per turn"
+    },
+    {
+      "name": "Protective Cloak",
+      "rarity": "Common",
+      "type": "accessory",
+      "bonus_type": "DEF",
+      "value": 10,
+      "note": "10% chance to reduce incoming damage by 50%"
+    }
+  ],
+  "armors": [
+    {
+      "name": "Heavy Armor",
+      "rarity": "Rare",
+      "usable_by": "Warrior",
+      "DEF": 20,
+      "HP_bonus": 30
+    },
+    {
+      "name": "Medium Armor",
+      "rarity": "Medium",
+      "usable_by": "All except Mage",
+      "DEF": 16,
+      "HP_bonus": 20
+    },
+    {
+      "name": "Light Armor",
+      "rarity": "Easy",
+      "usable_by": "All",
+      "DEF": 11,
+      "HP_bonus": 15
+    },
+    {
+      "name": "Mage Robe",
+      "rarity": "Medium",
+      "usable_by": "Mage",
+      "DEF": 10,
+      "HP_bonus": 20
+    }
+  ]
+}
