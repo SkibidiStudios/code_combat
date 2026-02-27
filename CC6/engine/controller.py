@@ -69,9 +69,9 @@ class GameLoop:
         while True:
             try:
                 choice = int(input("\n Enter your choice: "))
+                if 1 <= choice <= len(avaiable_actions):
+                    return avaiable_actions[choice - 1]
+                else:
+                    print("Invalid choice. Please try again.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
-        if 1 <= choice <= len(avaiable_actions):
-            return avaiable_actions[choice - 1]
-        else:
-            print("Invalid choice. Please try again.")
