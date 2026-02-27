@@ -44,7 +44,8 @@ class GameLoop:
     
     def choose_species(self):
         selected_species = random.sample(self.species_classes, 3)
-        self.ui.render_species_menu(selected_species)
+        species_names = [species_cls.__name__ for species_cls in selected_species]
+        self.ui.render_species_menu(species_names)
         while True:
             try:
                 choice = int(input("\n Enter your choice: "))
