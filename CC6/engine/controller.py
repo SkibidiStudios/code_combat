@@ -49,7 +49,8 @@ class GameLoop:
             try:
                 choice = int(input("\n Enter your choice: "))
                 if 1 <= choice <= 3:
-                    return selected_species[choice - 1]
+                    chosen_class = selected_species[choice - 1]
+                    return chosen_class()
                 else:
                     print("Invalid choice. Please try again.")
             except ValueError:
