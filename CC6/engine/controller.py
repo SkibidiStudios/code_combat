@@ -12,7 +12,7 @@ class GameLoop:
     def start_game(self):
         self.ui.set_background("bg1")
         self.player = self.choose_species("Player")
-        self.enemy = self.choose_species("Enemy")
+        self.enemy = random.choice(self.species_classes)("Enemy")
         self.game_loop()
 
     def end_game(self):
@@ -51,16 +51,18 @@ class GameLoop:
 
     def choose_species(self, character_name):
         selected_species = random.sample(self.species_classes, 3)
-        self.ui.render_species_menu(selected_species)
+        species_names = [species_cls.__name__ for species_cls in selected_species]
+        self.ui.render_species_menu(species_names)
         while True:
             try:
                 choice = int(input("\nEnter your choice: "))
                 if 1 <= choice <= 3:
-                    return selected_species[choice - 1]
+                    return selected_species[choice - 1](character_name)
                 else:
                     print("Invalid choice. Please try again.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
+                
 
     def choose_action(self, player):
         avaiable_actions = ["Attack"]
@@ -77,10 +79,10 @@ class GameLoop:
 
         while True:
             try:
-                choice = int(input("\n Enter your choice: "))
+                choice = int(input("\nEnter your choice: "))
+                if 1 <= choice <= len(avaiable_actions):
+                    return avaiable_actions[choice - 1]
+                else:
+                    print("Invalid choice. Please try again.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
-        if 1 <= choice <= len(avaiable_actions):
-            return avaiable_actions[choice - 1]
-        else:
-            print("Invalid choice. Please try again.")
