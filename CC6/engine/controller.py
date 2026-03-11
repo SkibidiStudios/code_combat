@@ -2,6 +2,7 @@ from ui.view import UIManager
 import random
 import os
 import importlib
+import pygame
 
 
 class GameLoop:
@@ -10,7 +11,8 @@ class GameLoop:
         self.ui = UIManager()
 
     def start_game(self):
-        self.ui.set_background("bg1")
+        self.ui.draw_background("bg1")
+        pygame.display.update()
         self.player = self.choose_species("Player")
         self.enemy = random.choice(self.species_classes)("Enemy")
         self.game_loop()
@@ -50,38 +52,49 @@ class GameLoop:
         return classes
 
     def choose_species(self, character_name):
-        selected_species = random.sample(self.species_classes, 3)
-        species_names = [species_cls.__name__ for species_cls in selected_species]
-        self.ui.render_species_menu(species_names)
+        selected_species = random.sample(self.species_classes, min(3, len(self.species_classes)))
+
+        classes_data = {}
+        for species_cls in selected_species:
+            class_name = species_cls.__name__
+            preview_path = os.path.join("assets", f"{class_name.lower()}.png")
+            classes_data[class_name] = {"preview": preview_path}
+
         while True:
-            try:
-                choice = int(input("\nEnter your choice: "))
-                if 1 <= choice <= 3:
-                    return selected_species[choice - 1](character_name)
-                else:
-                    print("Invalid choice. Please try again.")
-            except ValueError:
-                print("Invalid input. Please enter a number.")
+            mouse_pos = pygame.mouse.get_pos()
+            self.ui.draw_class_selection(classes_data, mouse_pos)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    raise SystemExit
+
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    for class_name, rect in self.ui.selection_rects.items():
+                        if rect.collidepoint(event.pos):
+                            for species_cls in selected_species:
+                                if species_cls.__name__ == class_name:
+                                    return species_cls(character_name)
                 
 
     def choose_action(self, player):
-        avaiable_actions = ["Attack"]
+        available_actions = ["Attack"]
 
         if player.inventory["second_hand"] is not None:
-            avaiable_actions.append("Parry")
+            available_actions.append("Parry")
 
         if player.ability_stats["current_cooldown"] == 0:
-            avaiable_actions.append("Ability")
+            available_actions.append("Ability")
 
         print("Choose the action from the menu below:\n")
-        for i, action in enumerate(avaiable_actions, start=1):
+        for i, action in enumerate(available_actions, start=1):
             print(f"{i}. {action}")
 
         while True:
             try:
                 choice = int(input("\nEnter your choice: "))
-                if 1 <= choice <= len(avaiable_actions):
-                    return avaiable_actions[choice - 1]
+                if 1 <= choice <= len(available_actions):
+                    return available_actions[choice - 1]
                 else:
                     print("Invalid choice. Please try again.")
             except ValueError:
