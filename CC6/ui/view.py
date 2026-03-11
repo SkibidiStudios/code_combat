@@ -1,11 +1,10 @@
-# view.py
 import os
 import pygame
 from enum import Enum
 
 # ------------------- COSTANTI -------------------
-PLAYER_START_POS = (200, 450)
-ENEMY_START_POS = (600, 450)
+PLAYER_START_POS = (200, 400)
+ENEMY_START_POS = (600, 400)
 BAR_WIDTH = 60
 BAR_HEIGHT = 10
 SPEED = 200
@@ -46,9 +45,8 @@ class Character(pygame.sprite.Sprite):
 
         self.image = self.frames["idle"]
         self.rect = self.image.get_rect(midbottom=self.start_pos)
-        self.pos_x = float(self.rect.x)  # posizione float per movimento fluido
+        self.pos_x = float(self.rect.x)
 
-    # barra HP
     def draw_hp_bar(self, surface):
         if self.model.max_hp <= 0:
             return
@@ -58,13 +56,11 @@ class Character(pygame.sprite.Sprite):
         pygame.draw.rect(surface, (180, 0, 0), (bx, by, BAR_WIDTH, BAR_HEIGHT))
         pygame.draw.rect(surface, (0, 200, 0), (bx, by, int(BAR_WIDTH * ratio), BAR_HEIGHT))
 
-    # trigger attacco
     def trigger_attack_animation(self, target_sprite):
         self.target = target_sprite
         self.attack_timer = 0
         self.state = SpriteState.MOVE_TO_TARGET
 
-    # movimento verso il target
     def move(self, dt):
         attack_range = 80
         distance = self.target.rect.centerx - self.rect.centerx
@@ -84,7 +80,6 @@ class Character(pygame.sprite.Sprite):
             self.attack_timer = 0
             self.image = self.frames["attack"]
 
-    # attacco
     def attack(self, dt):
         self.attack_timer += dt
         if self.attack_timer >= ATTACK_DURATION:
@@ -95,7 +90,6 @@ class Character(pygame.sprite.Sprite):
             self.state = SpriteState.RETURN
             self.return_timer = 0
 
-    # ritorno alla posizione iniziale
     def return_to_start(self, dt):
         self.return_timer += dt
         if self.return_timer >= RETURN_INTERVAL:
@@ -105,7 +99,6 @@ class Character(pygame.sprite.Sprite):
             self.image = self.frames["idle"]
             self.return_timer = 0
 
-    # subire danno
     def take_damage(self, dt):
         self.state = SpriteState.TAKE_DAMAGE
         self.image = self.frames["take"]
@@ -115,11 +108,9 @@ class Character(pygame.sprite.Sprite):
             self.image = self.frames["idle"]
             self.take_timer = 0
 
-    # morte
     def die(self):
         self.kill()
 
-    # update
     def update(self, dt):
         if self.state == SpriteState.IDLE:
             self.image = self.frames["idle"]
@@ -132,67 +123,6 @@ class Character(pygame.sprite.Sprite):
         elif self.state == SpriteState.TAKE_DAMAGE:
             self.take_damage(dt)
 
-# ------------------- WEAPON ---------------------
-class Weapon(pygame.sprite.Sprite):
-    SPRITE_SIZE = (120, 60)
-
-    def __init__(self, model, frames: dict, x: int, y: int):
-        """
-        Visualizzazione di un'arma coerente con Character.
-
-        :param model: oggetto Weapon con attributi name, type, min_damage, max_damage
-        :param frames: dizionario di immagini (pygame.Surface) per diversi stati, es: {"idle": path, "attack": path}
-        :param x: coordinata x del frame
-        :param y: coordinata y del frame
-        """
-        super().__init__()
-        self.model = model
-        self.frames = {}
-        for k, path in frames.items():
-            img = pygame.image.load(path).convert_alpha()
-            self.frames[k] = pygame.transform.scale(img, self.SPRITE_SIZE)
-
-        self.state = "idle"
-        self.image = self.frames.get("idle", pygame.Surface(self.SPRITE_SIZE))
-        self.rect = self.image.get_rect(topleft=(x, y))
-
-        # Timer per animazioni (opzionale)
-        self.attack_timer = 0
-        self.attack_duration = 0.5
-
-    def trigger_attack_animation(self):
-        """Attiva l'animazione di attacco dell'arma"""
-        if "attack" in self.frames:
-            self.state = "attack"
-            self.attack_timer = 0
-            self.image = self.frames["attack"]
-
-    def update(self, dt):
-        """Aggiorna lo stato dell'arma"""
-        if self.state == "attack":
-            self.attack_timer += dt
-            if self.attack_timer >= self.attack_duration:
-                self.state = "idle"
-                self.image = self.frames.get("idle", self.image)
-                self.attack_timer = 0
-
-    def draw_info(self, surface: pygame.Surface):
-        """Disegna nome, tipo e danno sopra o sotto il frame dell'arma"""
-        font_title = pygame.font.SysFont("Arial", 18, bold=True)
-        font_text = pygame.font.SysFont("Arial", 16)
-        padding_x, padding_y = 5, 5
-
-        name_surf = font_title.render(self.model.name, True, (255, 255, 255))
-        type_surf = font_text.render(f"Tipo: {self.model.type}", True, (255, 255, 255))
-        dmg_surf = font_text.render(f"Danno: {self.model.min_damage}-{self.model.max_damage}", True, (255, 255, 255))
-
-        surface.blit(name_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y))
-        surface.blit(type_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y + 18))
-        surface.blit(dmg_surf, (self.rect.x + padding_x, self.rect.bottom + padding_y + 36))
-
-    def update_position(self, x: int, y: int):
-        """Aggiorna la posizione del frame dell'arma"""
-        self.rect.topleft = (x, y)
 
 # ------------------- UI MANAGER -------------------
 class UIManager:
@@ -209,34 +139,81 @@ class UIManager:
 
         self.background_image = None
         self.title_font = pygame.font.SysFont("Arial", 48, bold=True)
-        self.menu_font = pygame.font.SysFont("Arial", 32)
+        self.menu_font = pygame.font.SysFont("Arial", 28, bold=True)
 
         self.color_white = (255, 255, 255)
-        self.color_black = (0, 0, 0)
-        self.color_gray = (80, 80, 80)
+        self.color_black = (20, 20, 20)
         self.color_highlight = (255, 215, 0)
+        self.color_button = (0, 150, 0)
 
-    # imposta background
-    def set_background(self, bg_name: str):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        base_path = os.path.join(base_dir, "..", "assets", f"{bg_name}.png")
-        if os.path.exists(base_path):
-            image = pygame.image.load(base_path).convert()
-            self.background_image = pygame.transform.scale(image, (self.width, self.height))
-        else:
-            self.background_image = pygame.Surface((self.width, self.height))
-            self.background_image.fill(self.color_black)
+        self.selection_rects = {}
 
-    # disegna background
-    def draw_background(self):
-        if self.background_image:
-            self.screen.blit(self.background_image, (0, 0))
-        else:
-            self.screen.fill(self.color_black)
+    def draw_background(self, bg_name: str):
+        if self.background_image is None or getattr(self, "_current_bg", "") != bg_name:
+            ui_dir = os.path.dirname(os.path.abspath(__file__))
+            project_root = os.path.dirname(ui_dir)
+            full_path = os.path.join(project_root, "assets", f"{bg_name}.png")
 
-    # render loop con sprite
-    def render(self, all_sprites=None):
-        self.draw_background()
+            if os.path.exists(full_path):
+                image = pygame.image.load(full_path).convert()
+                self.background_image = pygame.transform.scale(image, (self.width, self.height))
+                self._current_bg = bg_name
+            else:
+                self.background_image = pygame.Surface((self.width, self.height))
+                self.background_image.fill(self.color_black)
+                print(f"Errore: {full_path} non trovato.")
+
+        self.screen.blit(self.background_image, (0, 0))
+
+    def draw_class_selection(self, classes_data, mouse_pos):
+        self.draw_background("menu_bg")
+        n = len(classes_data)
+
+        card_w, card_h = 220, 320
+        spacing = 40
+        total_w = (card_w * n) + (spacing * (n - 1))
+        start_x = (self.width - total_w) // 2
+
+        title_surf = self.title_font.render("Scegli il tuo Eroe", True, self.color_white)
+        self.screen.blit(title_surf, (self.width // 2 - title_surf.get_width() // 2, 50))
+
+        self.selection_rects = {}
+
+        for i, (name, data) in enumerate(classes_data.items()):
+            rect = pygame.Rect(start_x + i * (card_w + spacing), 150, card_w, card_h)
+            self.selection_rects[name] = rect
+
+            # Hover effect
+            is_hover = rect.collidepoint(mouse_pos)
+            bg_color = (60, 60, 70) if is_hover else (45, 45, 50)
+
+            # Disegno card
+            pygame.draw.rect(self.screen, bg_color, rect, border_radius=15)
+            if is_hover:
+                pygame.draw.rect(self.screen, self.color_highlight, rect, 3, border_radius=15)
+
+            # Immagine Anteprima
+            try:
+                img = pygame.image.load(data["preview"]).convert_alpha()
+                img = pygame.transform.scale(img, (140, 140))
+                self.screen.blit(img, (rect.centerx - 70, rect.y + 20))
+            except:
+                pygame.draw.rect(self.screen, (100, 0, 0), (rect.centerx - 50, rect.y + 40, 100, 100))
+
+            # Nome Classe
+            name_surf = self.menu_font.render(name.upper(), True, self.color_white)
+            self.screen.blit(name_surf, (rect.centerx - name_surf.get_width() // 2, rect.y + 170))
+
+            # Pulsante "SCEGLI"
+            btn_rect = pygame.Rect(rect.x + 30, rect.bottom - 60, card_w - 60, 40)
+            pygame.draw.rect(self.screen, self.color_button, btn_rect, border_radius=8)
+            btn_surf = self.menu_font.render("SCEGLI", True, self.color_white)
+            self.screen.blit(btn_surf, (btn_rect.centerx - btn_surf.get_width() // 2, btn_rect.y + 5))
+
+        pygame.display.update()
+
+    def render(self, all_sprites=None, bg_name="battle_background"):
+        self.draw_background(bg_name)
         if all_sprites:
             all_sprites.draw(self.screen)
             for sprite in all_sprites:
