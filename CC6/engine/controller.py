@@ -1,6 +1,9 @@
-
 from ui.view import UIManager
 import random
+import os
+import importlib
+
+
 class GameLoop:
     def __init__(self, species_folder="species"):
         self.species_classes = self.load_species_classes(species_folder)
@@ -8,8 +11,8 @@ class GameLoop:
 
     def start_game(self):
         self.ui.set_background("bg1")
-        self.player = self.choose_species()
-        self.enemy = self.choose_species()
+        self.player = self.choose_species("Player")
+        self.enemy = self.choose_species("Enemy")
         self.game_loop()
 
     def end_game(self):
@@ -17,41 +20,43 @@ class GameLoop:
             print("You win!")
         else:
             print("You lose!")
-        
 
     def game_loop(self):
         while self.player.is_alive() and self.enemy.is_alive():
             player_action = self.choose_action(self.player)
+
             if player_action == "Attack":
                 self.player.attack(self.enemy)
             elif player_action == "Ability":
-                self.player.ability(self.ability,self.enemy)
-            self.enemy.attack(self.player)
+                self.player.ability(self.ability, self.enemy)
+
+            if self.enemy.is_alive():
+                self.enemy.attack(self.player)
+
         self.end_game()
 
-    def load_species_classes(self,species_folder):
-        classes = list()
+    def load_species_classes(self, species_folder):
+        classes = []
+
         for file in os.listdir(species_folder):
             if file.endswith(".py") and file != "__init__.py":
-                module_name = file[:-3]  # rimuove .py
+                module_name = file[:-3]
                 module = importlib.import_module(f"{species_folder}.{module_name}")
-                # Prende la classe con lo stesso nome del file (capitalizzato)
-            class_name = module_name.capitalize()
-            species_class = getattr(module, class_name)
 
-            classes.append(species_class)
+                class_name = module_name.capitalize()
+                species_class = getattr(module, class_name)
+                classes.append(species_class)
+
         return classes
-    
-    def choose_species(self):
+
+    def choose_species(self, character_name):
         selected_species = random.sample(self.species_classes, 3)
-        species_names = [species_cls.__name__ for species_cls in selected_species]
-        self.ui.render_species_menu(species_names)
+        self.ui.render_species_menu(selected_species)
         while True:
             try:
-                choice = int(input("\n Enter your choice: "))
+                choice = int(input("\nEnter your choice: "))
                 if 1 <= choice <= 3:
-                    chosen_class = selected_species[choice - 1]
-                    return chosen_class()
+                    return selected_species[choice - 1]
                 else:
                     print("Invalid choice. Please try again.")
             except ValueError:
@@ -59,19 +64,23 @@ class GameLoop:
 
     def choose_action(self, player):
         avaiable_actions = ["Attack"]
+
         if player.inventory["second_hand"] is not None:
             avaiable_actions.append("Parry")
+
         if player.ability_stats["current_cooldown"] == 0:
             avaiable_actions.append("Ability")
+
         print("Choose the action from the menu below:\n")
-        for action in avaiable_actions:
-            print(f"- {action}")
+        for i, action in enumerate(avaiable_actions, start=1):
+            print(f"{i}. {action}")
+
         while True:
             try:
                 choice = int(input("\n Enter your choice: "))
-                if 1 <= choice <= len(avaiable_actions):
-                    return avaiable_actions[choice - 1]
-                else:
-                    print("Invalid choice. Please try again.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
+        if 1 <= choice <= len(avaiable_actions):
+            return avaiable_actions[choice - 1]
+        else:
+            print("Invalid choice. Please try again.")
