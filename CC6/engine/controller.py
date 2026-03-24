@@ -19,7 +19,7 @@ class GameLoop:
         self.player = self.choose_species("Player")
 
         self.ui.set_background("bg2")
-        self.enemy = self.choose_species("Enemy", exclude_class=self.player.__class__)
+        self.enemy = self.choose_species("Enemy")
 
         self.ui.show_battle_intro(self.player, self.enemy)
         self.game_loop()
@@ -90,11 +90,9 @@ class GameLoop:
 
         return classes
 
-    def choose_species(self, character_name, exclude_class=None):
-        available_species = self.species_classes[:]
+    def choose_species(self, character_name):
+        available_species = self.species_classes.copy()
 
-        if exclude_class is not None:
-            available_species = [cls for cls in available_species if cls != exclude_class]
 
         selected_species = random.sample(available_species, 3)
 
