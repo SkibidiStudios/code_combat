@@ -6,81 +6,124 @@ import importlib
 
 class GameLoop:
     def __init__(self, species_folder="species"):
-        self.species_classes = self.load_species_classes(species_folder)
         self.ui = UIManager()
+        self.species_classes = self.load_species_classes(species_folder)
+        self.player = None
+        self.enemy = None
+        self.running = True
 
     def start_game(self):
         self.ui.set_background("bg1")
+        self.ui.show_title("Code Combat")
+
         self.player = self.choose_species("Player")
-        self.enemy = self.choose_species("Enemy")
+
+        self.ui.set_background("bg2")
+        self.enemy = self.choose_species("Enemy", exclude_class=self.player.__class__)
+
+        self.ui.show_battle_intro(self.player, self.enemy)
         self.game_loop()
 
     def end_game(self):
         if self.player.is_alive():
-            print("You win!")
+            self.ui.show_end_screen("You win!")
         else:
-            print("You lose!")
+            self.ui.show_end_screen("You lose!")
 
     def game_loop(self):
-        while self.player.is_alive() and self.enemy.is_alive():
+        while self.running and self.player.is_alive() and self.enemy.is_alive():
+            self.ui.render_battle_state(self.player, self.enemy)
+
             player_action = self.choose_action(self.player)
 
             if player_action == "Attack":
-                self.player.attack(self.enemy)
+                result = self.player.attack(self.enemy)
+                self.ui.show_action_feedback(self.player, self.enemy, "Attack", result)
+
             elif player_action == "Ability":
-                self.player.ability(self.ability, self.enemy)
+                result = self.player.ability(self.enemy)
+                self.ui.show_action_feedback(self.player, self.enemy, "Ability", result)
+
+            elif player_action == "Parry":
+                if hasattr(self.player, "parry"):
+                    result = self.player.parry()
+                    self.ui.show_action_feedback(self.player, self.enemy, "Parry", result)
+                else:
+                    self.ui.show_message("Parry not available.")
 
             if self.enemy.is_alive():
-                self.enemy.attack(self.player)
+                self.ui.render_battle_state(self.player, self.enemy)
+
+                enemy_action = self.enemy_choose_action(self.enemy)
+
+                if enemy_action == "Attack":
+                    result = self.enemy.attack(self.player)
+                    self.ui.show_action_feedback(self.enemy, self.player, "Attack", result)
+
+                elif enemy_action == "Ability":
+                    result = self.enemy.ability(self.player)
+                    self.ui.show_action_feedback(self.enemy, self.player, "Ability", result)
+
+                elif enemy_action == "Parry":
+                    if hasattr(self.enemy, "parry"):
+                        result = self.enemy.parry()
+                        self.ui.show_action_feedback(self.enemy, self.player, "Parry", result)
 
         self.end_game()
 
     def load_species_classes(self, species_folder):
         classes = []
 
-        for file in os.listdir(species_folder):
-            if file.endswith(".py") and file != "__init__.py":
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(current_dir)
+        species_path = os.path.join(project_root, species_folder)
+
+        for file in os.listdir(species_path):
+            if file.endswith(".py") and file not in ("__init__.py", "classe.py"):
                 module_name = file[:-3]
                 module = importlib.import_module(f"{species_folder}.{module_name}")
 
                 class_name = module_name.capitalize()
                 species_class = getattr(module, class_name)
+
                 classes.append(species_class)
 
         return classes
 
-    def choose_species(self, character_name):
-        selected_species = random.sample(self.species_classes, 3)
-        self.ui.render_species_menu(selected_species)
-        while True:
-            try:
-                choice = int(input("\nEnter your choice: "))
-                if 1 <= choice <= 3:
-                    return selected_species[choice - 1]
-                else:
-                    print("Invalid choice. Please try again.")
-            except ValueError:
-                print("Invalid input. Please enter a number.")
+    def choose_species(self, character_name, exclude_class=None):
+        available_species = self.species_classes[:]
+
+        if exclude_class is not None:
+            available_species = [cls for cls in available_species if cls != exclude_class]
+
+        selected_species = random.sample(available_species, 3)
+
+        choice_index = self.ui.render_species_menu(character_name, selected_species)
+
+        chosen_class = selected_species[choice_index]
+        chosen_character = chosen_class(character_name)
+
+        self.ui.show_message(f"{character_name} selected: {chosen_character.specie}")
+        return chosen_character
 
     def choose_action(self, player):
-        avaiable_actions = ["Attack"]
+        available_actions = ["Attack"]
 
-        if player.inventory["second_hand"] is not None:
-            avaiable_actions.append("Parry")
+        if hasattr(player, "inventory") and player.inventory["second_hand"] is not None:
+            available_actions.append("Parry")
 
-        if player.ability_stats["current_cooldown"] == 0:
-            avaiable_actions.append("Ability")
+        if hasattr(player, "ability_stats") and player.ability_stats["current_cooldown"] == 0:
+            available_actions.append("Ability")
 
-        print("Choose the action from the menu below:\n")
-        for i, action in enumerate(avaiable_actions, start=1):
-            print(f"{i}. {action}")
+        return self.ui.render_action_menu(player, available_actions)
 
-        while True:
-            try:
-                choice = int(input("\n Enter your choice: "))
-            except ValueError:
-                print("Invalid input. Please enter a number.")
-        if 1 <= choice <= len(avaiable_actions):
-            return avaiable_actions[choice - 1]
-        else:
-            print("Invalid choice. Please try again.")
+    def enemy_choose_action(self, enemy):
+        available_actions = ["Attack"]
+
+        if hasattr(enemy, "inventory") and enemy.inventory["second_hand"] is not None:
+            available_actions.append("Parry")
+
+        if hasattr(enemy, "ability_stats") and enemy.ability_stats["current_cooldown"] == 0:
+            available_actions.append("Ability")
+
+        return random.choice(available_actions)
