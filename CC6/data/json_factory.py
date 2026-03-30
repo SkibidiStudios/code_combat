@@ -10,13 +10,8 @@ class Weapon:
         self.min_dmg = min_dmg
         self.max_dmg = max_dmg
 
-    def calculate_average_damage(self, stat_value=0):
-        # A simple method to demonstrate damage calculation
-        average_dmg = (self.min_dmg + self.max_dmg) / 2
-        return average_dmg + (stat_value * 0.5)
-
-    def __repr__(self):
-        return f"<Weapon {self.name} | Rarity: {self.rarity} | Type: {self.type} | Stat: {self.stat_scaling} | Dmg: {self.min_dmg}-{self.max_dmg}>"
+    def __str__(self):
+        return f"Weapon: {self.name}, Rarity: {self.rarity}, Type: {self.type}, Stat: {self.stat_scaling}, Dmg: {self.min_dmg}-{self.max_dmg}"
 
 
 class Armor:
@@ -27,8 +22,8 @@ class Armor:
         self.defense = defense
         self.hp_bonus = hp_bonus
 
-    def __repr__(self):
-        return f"<Armor {self.name} | Rarity: {self.rarity} | Usable by: {self.usable_by} | DEF: {self.defense} | HP Bonus: {self.hp_bonus}>"
+    def __str__(self):
+        return f"Armor: {self.name}, Rarity: {self.rarity}, Usable by: {self.usable_by}, DEF: {self.defense}, HP Bonus: {self.hp_bonus}"
 
 
 class JsonFactory:
@@ -69,16 +64,3 @@ class JsonFactory:
 
     def get_all_armors(self):
         return [self.create_armor(name) for name in self.armors.keys()]
-
-
-if __name__ == "__main__":
-    factory = JsonFactory("CC6/data/data.json")
-    # Test weapons
-    print("--- Weapons ---")
-    for weapon in factory.get_all_weapons():
-        print(weapon)
-        print(f"  Avg Damage: {weapon.calculate_average_damage(10):.2f}")
-
-    print("\n--- Armors ---")
-    for armor in factory.get_all_armors():
-        print(armor)
